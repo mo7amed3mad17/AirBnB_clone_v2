@@ -12,3 +12,8 @@ class User(BaseModel, Base):
     password = Column(String(128), nullable=False)
     first_name = Column(String(128), nullable=True)
     last_name = Column(String(128), nullable=True)
+
+    # Relationship with Place class (cascade on delete)
+    places = relationship(
+        "Place", backref="user", cascade="all, delete"
+    )
