@@ -36,7 +36,22 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """Query the current database session."""
+        """Query on the current database session."""
+        if isinstance(cls, str):
+            # Map the string to the actual class
+            cls = {
+                "State": State,
+                "City": City,
+                # Add other mappings as needed
+            }.get(cls, None)
+
+        if cls:
+            query_results = self.__session.query(cls).all()
+        else:
+            query_results = self.__session.query(State).all()  # Example default query
+        return {obj.id: obj for obj in query_results}
+        """ def all(self, cls=None):
+        Query the current database session.
         objects = {}
         if cls:
             query_results = self.__session.query(cls).all()
@@ -49,7 +64,7 @@ class DBStorage:
                 for obj in query_results:
                     key = f"{obj.__class__.__name__}.{obj.id}"
                     objects[key] = obj
-        return objects
+        return objects"""
 
     def new(self, obj):
         """Add the object to the current database session."""

@@ -11,8 +11,9 @@ class State(BaseModel, Base):
     """ State class """
     __tablename__ = "states"
     name = Column(String(128), nullable=False)
-
     cities = relationship("City", backref="state", cascade="all, delete")
+    __table_args__ = {'mysql_charset': 'utf8mb4', 'mysql_collate': 'utf8mb4_unicode_ci'}
+
 
     @property
     def cities(self):
